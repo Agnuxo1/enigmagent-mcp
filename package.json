@@ -1,7 +1,7 @@
 {
   "name": "enigmagent-mcp",
-  "version": "1.0.1",
-  "mcpName": "io.github.agnuxo1/enigmagent-mcp",
+  "version": "1.0.2",
+  "mcpName": "io.github.Agnuxo1/enigmagent-mcp",
   "private": false,
   "files": [
     "index.js",
@@ -38,6 +38,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/agnuxo1/enigmagent-mcp"
+    "url": "https://github.com/Agnuxo1/enigmagent-mcp"
   }
 }
