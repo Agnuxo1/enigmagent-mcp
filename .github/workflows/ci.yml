@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  smoke:
+    name: Smoke test (Node ${{ matrix.node }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ['18', '20', '22']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install
+      - name: Server boots in locked mode (no TTY)
+        shell: bash
+        run: |
+          # Server should print the locked-mode message and exit cleanly when
+          # stdin has no TTY and no auth env vars are set.
+          timeout 10 node index.js --vault /tmp/test.vault.json < /dev/null > out.log 2>&1 || true
+          grep -q "Running in locked mode" out.log || (cat out.log && exit 1)
+          echo "✓ locked-mode path works on Node ${{ matrix.node }} / ${{ matrix.os }}"
+      - name: Pack tarball
+        run: npm pack --dry-run
+
+  validate-server-json:
+    name: Validate server.json against MCP Registry
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download mcp-publisher
+        run: |
+          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
+            | tar -xz mcp-publisher
+          chmod +x mcp-publisher
+      - name: Validate
+        run: ./mcp-publisher validate
