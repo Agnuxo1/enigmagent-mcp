@@ -1,5 +1,6 @@
 # enigmagent-mcp
 
+[![SafeSkill 96/100](https://img.shields.io/badge/SafeSkill-96%2F100_Verified%20Safe-brightgreen)](https://safeskill.dev/scan/agnuxo1-enigmagent-mcp)
 **Encrypted local vault for AI agents — via MCP protocol**
 
 `enigmagent-mcp` is the Model Context Protocol server for [EnigmAgent](https://github.com/Agnuxo1/EnigmAgent). It exposes your AES-256-GCM + Argon2id encrypted credential vault as MCP tools, allowing any MCP-compatible AI agent (Claude Desktop, Cursor, Continue.dev, Open WebUI, AnythingLLM, LM Studio, etc.) to resolve `{{PLACEHOLDER}}` secrets at runtime.
