@@ -1,0 +1,86 @@
+{
+  "manifest_version": "0.3",
+  "name": "enigmagent-mcp",
+  "display_name": "EnigmAgent",
+  "version": "1.0.4",
+  "description": "Local encrypted vault MCP server. {{PLACEHOLDER}} secrets resolved at runtime, LLMs never see keys.",
+  "long_description": "EnigmAgent intercepts at the MCP boundary, decrypts secrets locally with AES-256-GCM (Argon2id-derived key), and returns the real value only when the requesting origin matches the secret's bound domain. The model literally never has the value. Works with Claude Desktop, Cursor, Continue.dev, Cline, Open WebUI, AnythingLLM, LM Studio, Zed and any MCP-compatible client.",
+  "author": {
+    "name": "Francisco Angulo de Lafuente",
+    "email": "agnuxo1@gmail.com",
+    "url": "https://github.com/Agnuxo1"
+  },
+  "homepage": "https://github.com/Agnuxo1/enigmagent-mcp",
+  "documentation": "https://github.com/Agnuxo1/enigmagent-mcp#readme",
+  "support": "https://github.com/Agnuxo1/enigmagent-mcp/issues",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Agnuxo1/enigmagent-mcp"
+  },
+  "keywords": [
+    "vault",
+    "secrets",
+    "encryption",
+    "aes-256-gcm",
+    "argon2id",
+    "mcp",
+    "stdio",
+    "security",
+    "ai-agents"
+  ],
+  "server": {
+    "type": "node",
+    "entry_point": "index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": [
+        "${__dirname}/index.js",
+        "--vault",
+        "${user_config.vault_path}"
+      ],
+      "env": {
+        "ENIGMAGENT_USER": "${user_config.enigmagent_user}",
+        "ENIGMAGENT_PASS": "${user_config.enigmagent_pass}"
+      }
+    }
+  },
+  "user_config": {
+    "vault_path": {
+      "type": "file",
+      "title": "Vault file",
+      "description": "Absolute path to your encrypted vault (my.vault.json).",
+      "required": true
+    },
+    "enigmagent_user": {
+      "type": "string",
+      "title": "Username (optional, headless mode)",
+      "description": "Skip interactive prompt. Leave empty to be prompted on first use.",
+      "required": false,
+      "default": ""
+    },
+    "enigmagent_pass": {
+      "type": "string",
+      "title": "Master password (optional, headless mode)",
+      "description": "Skip interactive prompt. Sensitive — leave empty to be prompted on first use.",
+      "required": false,
+      "sensitive": true,
+      "default": ""
+    }
+  },
+  "tools": [
+    {
+      "name": "enigmagent_resolve",
+      "description": "Resolve a {{PLACEHOLDER}} to its real secret value (origin-bound)."
+    },
+    {
+      "name": "enigmagent_list",
+      "description": "List secret names and bound domains (values never returned)."
+    }
+  ],
+  "compatibility": {
+    "runtimes": {
+      "node": ">=18.0.0"
+    }
+  }
+}

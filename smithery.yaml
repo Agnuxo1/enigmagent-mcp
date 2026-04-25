@@ -1,0 +1,39 @@
+# Smithery.ai server descriptor for EnigmAgent MCP
+# https://smithery.ai/docs/build/publish
+#
+# EnigmAgent is a stdio MCP server. The npm package `enigmagent-mcp`
+# is launched via `npx`; the user supplies the absolute path to their
+# encrypted vault at runtime. No secret values reach Smithery — the
+# vault stays local and is decrypted only in the user's process memory.
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    title: EnigmAgent vault configuration
+    properties:
+      vaultPath:
+        type: string
+        title: Vault file path
+        description: Absolute path to the encrypted vault file (my.vault.json).
+        default: "./my.vault.json"
+      enigmagentUser:
+        type: string
+        title: Username (headless mode)
+        description: Optional. Username for headless / CI mode. If omitted, the server prompts interactively on first use.
+      enigmagentPass:
+        type: string
+        title: Master password (headless mode)
+        description: Optional. Master password for headless / CI mode. Use only in trusted environments — leave blank to be prompted interactively.
+        format: password
+    required:
+      - vaultPath
+  commandFunction: |-
+    (config) => ({
+      command: "npx",
+      args: ["-y", "enigmagent-mcp", "--vault", config.vaultPath],
+      env: {
+        ...(config.enigmagentUser ? { ENIGMAGENT_USER: config.enigmagentUser } : {}),
+        ...(config.enigmagentPass ? { ENIGMAGENT_PASS: config.enigmagentPass } : {})
+      }
+    })
