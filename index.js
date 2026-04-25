@@ -398,10 +398,25 @@ function startRestMode() {
 (async () => {
   try {
     process.stderr.write(`[EnigmAgent MCP] Vault: ${resolve(VAULT_PATH)}\n`);
-    const { username, password } = await promptCredentials();
-    process.stderr.write(`[EnigmAgent MCP] Unlocking vault (Argon2id — takes ~2s)…\n`);
-    await vault.unlock(username, password);
-    process.stderr.write(`[EnigmAgent MCP] Vault unlocked for: ${username}\n`);
+
+    // If env vars are set, auto-unlock (CI/automation mode).
+    // If stdin is not a TTY (piped — e.g. under mcp-proxy), start in locked mode
+    // so the MCP server can respond to introspection without blocking on prompts.
+    if (process.env.ENIGMAGENT_USER && process.env.ENIGMAGENT_PASS) {
+      process.stderr.write(`[EnigmAgent MCP] Unlocking vault (Argon2id — takes ~2s)…\n`);
+      await vault.unlock(process.env.ENIGMAGENT_USER, process.env.ENIGMAGENT_PASS);
+      process.stderr.write(`[EnigmAgent MCP] Vault unlocked for: ${process.env.ENIGMAGENT_USER}\n`);
+    } else if (!process.stdin.isTTY) {
+      // Non-interactive: start MCP server in locked state.
+      // Tools return vault_locked error until unlocked via env vars.
+      process.stderr.write(`[EnigmAgent MCP] Running in locked mode (no TTY — set ENIGMAGENT_USER + ENIGMAGENT_PASS to auto-unlock).\n`);
+    } else {
+      // Interactive terminal: prompt for credentials.
+      const { username, password } = await promptCredentials();
+      process.stderr.write(`[EnigmAgent MCP] Unlocking vault (Argon2id — takes ~2s)…\n`);
+      await vault.unlock(username, password);
+      process.stderr.write(`[EnigmAgent MCP] Vault unlocked for: ${username}\n`);
+    }
 
     if (MODE === 'rest') {
       startRestMode();
