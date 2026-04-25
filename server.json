@@ -1,0 +1,47 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
+  "name": "io.github.Agnuxo1/enigmagent-mcp",
+  "description": "Local encrypted vault MCP server for AI agents. Resolves {{PLACEHOLDER}} secrets at runtime so LLMs never see real API keys. AES-256-GCM + Argon2id, MIT, zero cloud, zero telemetry.",
+  "version": "1.0.3",
+  "repository": {
+    "url": "https://github.com/Agnuxo1/enigmagent-mcp",
+    "source": "github",
+    "id": "Agnuxo1/enigmagent-mcp"
+  },
+  "websiteUrl": "https://www.npmjs.com/package/enigmagent-mcp",
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "enigmagent-mcp",
+      "version": "1.0.3",
+      "transport": {
+        "type": "stdio"
+      },
+      "runtimeArguments": [
+        {
+          "type": "named",
+          "name": "--vault",
+          "description": "Absolute path to the encrypted vault file",
+          "isRequired": true,
+          "format": "filepath",
+          "default": "./my.vault.json"
+        }
+      ],
+      "environmentVariables": [
+        {
+          "name": "ENIGMAGENT_USER",
+          "description": "Username for headless / CI mode (skips interactive prompt)",
+          "isRequired": false,
+          "isSecret": false
+        },
+        {
+          "name": "ENIGMAGENT_PASS",
+          "description": "Master password for headless / CI mode (skips interactive prompt). Use only in trusted environments.",
+          "isRequired": false,
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}
