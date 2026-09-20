@@ -1,5 +1,22 @@
 # AGENTS.md — enigmagent-mcp
 
+## Version 2.0.0 security contract
+
+The current entry point is `index.js` and the current vault implementation is
+`vault-secure.js`. `index-legacy-v1.js`, `vault-core.js`, and `README-legacy-v1.md`
+are retained only as historical references. Do not use the legacy files in new
+code or describe their behavior as the current security boundary.
+
+MCP raw resolution is disabled by default. REST requires a high-entropy Bearer
+token, loopback binding, bounded JSON, and no browser CORS. A caller-declared
+origin is not attestation. Never enable raw resolution for an untrusted client,
+never put a real credential in tests, and never claim that a returned value is
+invisible to a trusted client or its model after explicit opt-in.
+
+All security-sensitive changes require tests for malformed input, wrong
+credentials, domain mismatch, redaction, and process continuity. Keep public
+errors code-based and do not serialize arbitrary exception messages.
+
 This file is addressed to AI agents and LLM-based tools that discover or use this repository.
 
 ## What this tool does

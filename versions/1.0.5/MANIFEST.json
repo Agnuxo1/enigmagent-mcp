@@ -1,0 +1,80 @@
+{
+  "repository": "Agnuxo1/enigmagent-mcp",
+  "version": "1.0.5",
+  "source_commit": "351267633197d655616c2e7108174606b3ffedc8",
+  "source_tag": null,
+  "tracked_file_count": 13,
+  "archive": {
+    "name": "source-3512676.tar.gz",
+    "bytes": 13887,
+    "sha256": "0137544d0268eade04ab3e146bbb85f1896066dd0c294bfd3fdca0cfde4a6947"
+  },
+  "files": [
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 1572,
+      "sha256": "3b3f9324954bd108e79ca29aad8d38b539e6cc4791633b7031bc017472412fcb"
+    },
+    {
+      "path": ".github/workflows/publish.yml",
+      "bytes": 2394,
+      "sha256": "14b1f66f29a14409ece4d6fc06eb3eddee5c00a4ff0416e1d04fbb935e4acd62"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 40,
+      "sha256": "c5daf482cbcf4cc9366e372b66f6a07810d77a1239fce50554ec6fa494ef716e"
+    },
+    {
+      "path": ".gitkeep",
+      "bytes": 18,
+      "sha256": "9f9bea66024b41098cd5affdf627292116dc9454c47f518c21a5e62e2abb2978"
+    },
+    {
+      "path": "AGENTS.md",
+      "bytes": 2021,
+      "sha256": "18f091c66bdac6a103c773fd314fc715051667409b297728adb3298f3aeb90e7"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 1106,
+      "sha256": "3e678775bdc901ec198d173d64cffd4d5998a5491fd67899ce3067e93c842ab5"
+    },
+    {
+      "path": "README.md",
+      "bytes": 7239,
+      "sha256": "259ad87c60ab4de40ab9cf4ffe6745e427af90ad6d435d70a38f4e789c240f46"
+    },
+    {
+      "path": "index.js",
+      "bytes": 17984,
+      "sha256": "69bf275aa81bf43597d18b2e661318f58d6720f873eb34c28b1b14f878cba93f"
+    },
+    {
+      "path": "manifest.json",
+      "bytes": 2799,
+      "sha256": "e7f2aa64f447713534c5867aab9eba95820fe39f2deb84d711bb336f6127da8b"
+    },
+    {
+      "path": "package.json",
+      "bytes": 1446,
+      "sha256": "50e374dac3166f8887e601ec9b44444a51fbe8c670c4091290606627e91a46e3"
+    },
+    {
+      "path": "server.json",
+      "bytes": 1540,
+      "sha256": "f47bf3a5d0e17b8038afcb622217bf3900d22cb9220167ea0b0d396e72462de0"
+    },
+    {
+      "path": "smithery.yaml",
+      "bytes": 1550,
+      "sha256": "38bd56205e687f6d7bdbcc983fd14ce7680d66d0cd053e38c3a46f87de2f1c85"
+    },
+    {
+      "path": "vault-core.js",
+      "bytes": 10290,
+      "sha256": "9d900778804feab6c57e16da5d505dbe41642a7b25bc33d8624fdda75b66a06f"
+    }
+  ],
+  "verification": "Generated before any working-tree edit; each tracked file hash was computed from the baseline checkout."
+}
