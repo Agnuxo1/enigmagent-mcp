@@ -1,14 +1,21 @@
 {
   "name": "enigmagent-mcp",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "mcpName": "io.github.Agnuxo1/enigmagent-mcp",
   "private": false,
   "files": [
     "index.js",
-    "vault-core.js",
-    "README.md"
+    "vault-secure.js",
+    "mcp-server.js",
+    "rest-server.js",
+    "integrations.js",
+    "README.md",
+    "LICENSE",
+    "manifest.json",
+    "server.json",
+    "smithery.yaml"
   ],
-  "description": "Local encrypted vault MCP server. AES-256-GCM + Argon2id. Resolves {{PLACEHOLDER}} secrets at runtime so LLMs never see real API keys. Works with Claude Desktop, Cursor, Continue.dev, Cline, Open WebUI.",
+  "description": "Local encrypted vault MCP server with Argon2id, AES-256-GCM, authenticated REST, bounded MCP transport, and opt-in raw resolution.",
   "type": "module",
   "bin": {
     "enigmagent-mcp": "./index.js"
@@ -16,13 +23,16 @@
   "scripts": {
     "start": "node index.js",
     "start:rest": "node index.js --mode rest --port 3737",
-    "start:mcp": "node index.js --mode mcp"
+    "start:mcp": "node index.js --mode mcp",
+    "test": "node --test",
+    "benchmark": "node scripts/benchmark.js",
+    "check": "node --check index.js && node --check vault-secure.js && node --check mcp-server.js && node --check rest-server.js && node --check integrations.js"
   },
   "dependencies": {
     "@noble/hashes": "1.4.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "keywords": [
     "mcp",

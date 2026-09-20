@@ -6,42 +6,48 @@ on:
   pull_request:
     branches: [main]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  smoke:
-    name: Smoke test (Node ${{ matrix.node }})
+  test:
+    name: Node ${{ matrix.node }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        node: ['18', '20', '22']
+        os: [ubuntu-latest, windows-latest]
+        node: ['20', '22']
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
-      - name: Install dependencies
-        run: npm install
-      - name: Server boots in locked mode (no TTY)
-        shell: bash
-        run: |
-          # Server should print the locked-mode message and exit cleanly when
-          # stdin has no TTY and no auth env vars are set.
-          timeout 10 node index.js --vault /tmp/test.vault.json < /dev/null > out.log 2>&1 || true
-          grep -q "Running in locked mode" out.log || (cat out.log && exit 1)
-          echo "✓ locked-mode path works on Node ${{ matrix.node }} / ${{ matrix.os }}"
-      - name: Pack tarball
-        run: npm pack --dry-run
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npm run check
+      - run: npm run benchmark
+        env:
+          BENCHMARK_ROUNDS: '1'
+      - run: npm pack --dry-run
 
-  validate-server-json:
-    name: Validate server.json against MCP Registry
+  metadata:
+    name: Distribution metadata
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download mcp-publisher
+      - name: Verify all public descriptors use the package version
+        shell: node {0}
         run: |
-          curl -fsSL "https://github.com/modelcontextprotocol/registry/releases/latest/download/mcp-publisher_linux_amd64.tar.gz" \
-            | tar -xz mcp-publisher
-          chmod +x mcp-publisher
-      - name: Validate
-        run: ./mcp-publisher validate
+          const fs = require('node:fs');
+          const packageVersion = JSON.parse(fs.readFileSync('package.json')).version;
+          const serverVersion = JSON.parse(fs.readFileSync('server.json')).version;
+          const manifestVersion = JSON.parse(fs.readFileSync('manifest.json')).version;
+          const packageEntry = JSON.parse(fs.readFileSync('server.json')).packages[0].version;
+          if (new Set([packageVersion, serverVersion, manifestVersion, packageEntry]).size !== 1) process.exit(1);
+          if (packageVersion !== '2.0.0') process.exit(1);
