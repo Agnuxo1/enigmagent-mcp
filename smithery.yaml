@@ -31,7 +31,7 @@ startCommand:
   commandFunction: |-
     (config) => ({
       command: "npx",
-      args: ["-y", "enigmagent-mcp", "--vault", config.vaultPath],
+      args: ["-y", "enigmagent-mcp@2.0.0", "--vault", config.vaultPath],
       env: {
         ...(config.enigmagentUser ? { ENIGMAGENT_USER: config.enigmagentUser } : {}),
         ...(config.enigmagentPass ? { ENIGMAGENT_PASS: config.enigmagentPass } : {})
