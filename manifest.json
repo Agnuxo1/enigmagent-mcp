@@ -2,9 +2,9 @@
   "manifest_version": "0.3",
   "name": "enigmagent-mcp",
   "display_name": "EnigmAgent",
-  "version": "1.0.4",
-  "description": "Local encrypted vault MCP server. {{PLACEHOLDER}} secrets resolved at runtime, LLMs never see keys.",
-  "long_description": "EnigmAgent intercepts at the MCP boundary, decrypts secrets locally with AES-256-GCM (Argon2id-derived key), and returns the real value only when the requesting origin matches the secret's bound domain. The model literally never has the value. Works with Claude Desktop, Cursor, Continue.dev, Cline, Open WebUI, AnythingLLM, LM Studio, Zed and any MCP-compatible client.",
+  "version": "2.0.0",
+  "description": "Local encrypted vault MCP server with safe metadata-only defaults and explicit trusted-client raw resolution.",
+  "long_description": "EnigmAgent stores entries using Argon2id-derived AES-256-GCM keys, exposes metadata without values by default, bounds opt-in raw resolution to a caller-declared origin, and provides an authenticated local REST transport with bounded requests. The caller-declared origin is not attestation; raw resolution must only be enabled for a trusted client.",
   "author": {
     "name": "Francisco Angulo de Lafuente",
     "email": "agnuxo1@gmail.com",
@@ -71,7 +71,7 @@
   "tools": [
     {
       "name": "enigmagent_resolve",
-      "description": "Resolve a {{PLACEHOLDER}} to its real secret value (origin-bound)."
+      "description": "Opt-in trusted-client resolution of a {{PLACEHOLDER}} to its real value (origin-bound). Disabled by default."
     },
     {
       "name": "enigmagent_list",
@@ -80,7 +80,7 @@
   ],
   "compatibility": {
     "runtimes": {
-      "node": ">=18.0.0"
+      "node": ">=20.0.0"
     }
   }
 }
