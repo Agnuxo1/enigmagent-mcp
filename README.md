@@ -20,6 +20,10 @@ is not proof of the network destination, and a trusted MCP client can still pass
 returned plaintext to its model. Do not enable raw resolution for an untrusted
 client or a shared process.
 
+<!-- impact-note:start -->
+<sub><strong>Efficiency and practical value.</strong> A common local server centralizes encrypted storage and client configuration, reducing the need to implement vault handling separately for each MCP client. Metadata-only defaults, bounded requests and recovery backups make its operational boundary more explicit than ad hoc plaintext configuration. The reusable adapters support setup consistency, subject to the <a href="#scope-and-threat-model">documented trust limits</a>.</sub>
+<!-- impact-note:end -->
+
 ## Install and run
 
 ```bash
